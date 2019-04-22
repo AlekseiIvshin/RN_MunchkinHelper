@@ -1,6 +1,6 @@
-# RactNative RPGHelper
+# RactNative Munchkin helper
 
-ReactNative adaptation for RPG helper app.
+ReactNative adaptation for Munchkin helper app.
 
 ### Motivation
 
