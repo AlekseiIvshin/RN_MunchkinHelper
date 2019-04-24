@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import { View, Text, FlatList, TextInput, Button, StyleSheet } from "react-native";
+import { View, Text, FlatList, TextInput, Button, StyleSheet, Switch } from "react-native";
 import {Formik} from "formik";
 import uuid from "uuid/v4";
 import { IItem, ItemTypes, colors, Routes } from "../common";
@@ -38,7 +38,7 @@ const AddItemScreen = observer((props: AddItemScreenProps) => {
     return (
         <View style={styles.container}>
             <Formik 
-                initialValues={{name: "", bonus: 0, type: ItemTypes.Bonus}}
+                initialValues={{name: "", bonus: 0, type: ItemTypes.Bonus, isBig: false}}
                 onSubmit={onSubmit}
             >
             {
@@ -51,12 +51,19 @@ const AddItemScreen = observer((props: AddItemScreenProps) => {
                             value={formProps.values.name}
                             style={styles.input}
                         />
-                        <View  style={styles.optionsContainer}>
+                        <View style={styles.optionsContainer}>
                             <Text style={styles.label}>Bonus:</Text>
                             <Counter
                                 value={formProps.values.bonus}
                                 name={"bonus"}
                                 type={typeof number}
+                            />
+                        </View>
+                        <View style={styles.optionsContainer}>
+                            <Text style={styles.label}>Is big:</Text>
+                            <Switch
+                                value={formProps.values.isBig}
+                                onValueChange={formProps.handleChange('isBig')}
                             />
                         </View>
                         <View style={styles.typesContainer}>

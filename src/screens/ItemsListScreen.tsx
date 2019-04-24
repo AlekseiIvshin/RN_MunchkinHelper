@@ -4,6 +4,7 @@ import { IItem } from "../common";
 import ItemView from "../components/ItemView";
 import {observer} from "mobx-react";
 import { Item } from "../state/ItemsStorage";
+import { signify } from "../utils";
 
 interface ItemsListProps {
     store: {
@@ -15,10 +16,9 @@ interface ItemsListProps {
 const renderItem = ({item}:{item: IItem}) => <ItemView item={item}/>
 
 const ItemsListScreen = observer((props: ItemsListProps) => {
-    const totalBonus = (props.store.totalBonus > 0 ? "+":"") + props.store.totalBonus;
     return (
         <React.Fragment>
-            <Text style={styles.totalBonus}>Total bonus: {totalBonus}</Text>
+            <Text style={styles.totalBonus}>Total bonus: {signify(props.store.totalBonus)}</Text>
             <FlatList
                 data={props.store.allItems}
                 renderItem={renderItem}

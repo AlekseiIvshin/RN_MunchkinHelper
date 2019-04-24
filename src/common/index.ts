@@ -26,6 +26,7 @@ interface IItem {
     name: string;
     type: ItemTypes;
     bonus: number;
+    isBig: boolean;
 }
 interface Munchkin {
     name: string;
@@ -34,4 +35,9 @@ interface Munchkin {
     gender: "female" | "male";
 }
 
-export {Routes, colors, IItem, ItemTypes, Munchkin}
+interface Store {
+    getData: () => any;
+    setData: (data: any) => void;
+}
+
+export {Routes, colors, IItem, ItemTypes, Munchkin, Store}
