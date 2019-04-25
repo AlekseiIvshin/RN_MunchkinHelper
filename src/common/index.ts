@@ -1,6 +1,9 @@
+import { Rule } from "../state/RulesStorage";
+
 const Routes = {
     ItemsList: "itemsList",
     AddItem: "addItem",
+    Rules: "rules",
 }
 
 const colors = {
@@ -21,6 +24,12 @@ enum ItemTypes {
     Bonus = 'bonus',
 }
 
+enum Rules {
+    One_TwoHanded = "one_twohanded",
+    One_Big = "one_big",
+    Check_Gender = "check_gender",
+}
+
 interface IItem {
     id: string;
     name: string;
@@ -28,6 +37,12 @@ interface IItem {
     bonus: number;
     isBig: boolean;
 }
+
+interface IRule {
+    name: Rules;
+    value: boolean;
+}
+
 interface Munchkin {
     name: string;
     level: number;
@@ -35,9 +50,38 @@ interface Munchkin {
     gender: "female" | "male";
 }
 
-interface Store {
+interface Storage {
     getData: () => any;
     setData: (data: any) => void;
 }
 
-export {Routes, colors, IItem, ItemTypes, Munchkin, Store}
+interface IItemsStorage extends Storage {
+    allItems: IItem[];
+    totalBonus: number;
+    addItem: (item: IItem) => any;
+}
+
+interface IRulesStorage extends Storage {
+    allRules: IRule[];
+    toggleRule: (update: IRule) => any;
+    version: number;
+}
+
+interface Store {
+    itemsStorage: IItemsStorage;
+    rulesStorage: IRulesStorage;
+}
+
+export {
+    Routes, 
+    colors, 
+    IItem, 
+    IRule, 
+    ItemTypes, 
+    Munchkin, 
+    Storage, 
+    IItemsStorage, 
+    IRulesStorage, 
+    Store, 
+    Rules
+}

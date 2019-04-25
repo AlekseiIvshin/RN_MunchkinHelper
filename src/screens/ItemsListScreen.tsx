@@ -1,16 +1,13 @@
 import * as React from "react";
 import { View, FlatList, Text, StyleSheet } from "react-native";
-import { IItem } from "../common";
+import { IItem, IItemsStorage } from "../common";
 import ItemView from "../components/ItemView";
 import {observer} from "mobx-react";
 import { Item } from "../state/ItemsStorage";
 import { signify } from "../utils";
 
 interface ItemsListProps {
-    store: {
-        allItems: IItem[];
-        totalBonus: number;
-    }
+    store: IItemsStorage
 }
 
 const renderItem = ({item}:{item: IItem}) => <ItemView item={item}/>
@@ -22,6 +19,7 @@ const ItemsListScreen = observer((props: ItemsListProps) => {
             <FlatList
                 data={props.store.allItems}
                 renderItem={renderItem}
+                extraData={props.store.totalBonus}
             />
         </React.Fragment>
     );

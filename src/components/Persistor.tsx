@@ -1,12 +1,15 @@
 import * as React from "react";
 import {AsyncStorage, AppState} from "react-native";
 import _ from "lodash";
-import {Store} from "../common/index";
+import {Storage, Store} from "../common/index";
 import App from "../App";
 
 interface PersistorProps {
-    storages: {[key: string]: Store};
+    storages: Store;
     renderLoading: () => JSX.Element;
+    config: {
+        version: number;
+    }
 }
 
 interface PersistorState {
@@ -44,12 +47,20 @@ class Persistor extends React.Component<PersistorProps, PersistorState> {
 
     _rehydrate = async () => {
         try {
-            const rawValue = await AsyncStorage.getItem("@persisted_state");
-            const value = JSON.parse(rawValue);
-            _.forIn(value, (value, key)=> {
-                this.props.storages[key].setData(value);
-            })
-            console.log("State was rehydrated", rawValue);
+            const version = await AsyncStorage.getItem("@persisted_version");
+            if (parseInt(version) === this.props.config.version) {
+                const rawValue = await AsyncStorage.getItem("@persisted_state");
+                console.log("Persistor: data rehydrated", rawValue)
+                const value = JSON.parse(rawValue);
+                _.forIn(value, (value, key)=> {
+                    if (this.props.storages[key]){
+                        this.props.storages[key].setData(value);
+                    }
+                })
+            } else {
+                console.log("Persistor: version updated")
+                await AsyncStorage.setItem("@persisted_state", JSON.stringify({}));
+            }
             this.setState({ready: true});
         } catch (e) {
             console.error(e);
@@ -61,9 +72,10 @@ class Persistor extends React.Component<PersistorProps, PersistorState> {
             const storeData = _.reduce(this.props.storages, (acc, store, key)=> {
                 acc[key]=store.getData();
                 return acc;
-            });
+            }, {});
+            console.log("Persistor: persisting data", storeData);
             await AsyncStorage.setItem("@persisted_state", JSON.stringify(storeData));
-            console.log("State was persisted");
+            await AsyncStorage.setItem("@persisted_version", JSON.stringify(this.props.config.version));
             this.setState({ready: true});
         } catch (e) {
             console.error(e);

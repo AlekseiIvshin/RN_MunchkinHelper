@@ -4,17 +4,18 @@ import {createAppContainer} from "react-navigation";
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import Persistor from './components/Persistor';
 import ItemsStorage from './state/ItemsStorage';
+import store from './state';
 
 const AppContainer = createAppContainer(MainNavigator)
 
-const storages = {
-  "items": ItemsStorage,
+const persistorConfig = {
+  version: 1,
 }
 
 export default class App extends React.Component {
   render() {
     return (
-      <Persistor renderLoading={this._renderLoading} storages={storages}>
+      <Persistor renderLoading={this._renderLoading} storages={store} config={persistorConfig}>
         <AppContainer/>
       </Persistor>
     )

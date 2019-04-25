@@ -3,7 +3,7 @@ import {useState} from "react";
 import { View, Text, FlatList, TextInput, Button, StyleSheet, Switch } from "react-native";
 import {Formik} from "formik";
 import uuid from "uuid/v4";
-import { IItem, ItemTypes, colors, Routes } from "../common";
+import { IItem, ItemTypes, colors, Routes, IItemsStorage } from "../common";
 import ItemView from "../components/ItemView";
 import {observer} from "mobx-react";
 import { Item } from "../state/ItemsStorage";
@@ -21,14 +21,11 @@ const typesMap = [
 ]
 
 interface AddItemScreenProps {
-    store: {
-        addItem: (item: IItem) => any;
-    },
+    store: IItemsStorage;
     navigation: any;
 }
 
 const AddItemScreen = observer((props: AddItemScreenProps) => {
-    console.log(">>>", props)
     const onSubmit = (values, {resetForm}) => {
         props.store.addItem(values);
         props.navigation.navigate(Routes.ItemsList);

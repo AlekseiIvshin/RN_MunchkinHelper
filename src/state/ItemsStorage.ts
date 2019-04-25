@@ -1,15 +1,16 @@
-import { observable, computed, action } from "mobx";
+import { observable, computed, action, autorun } from "mobx";
 import uuid from "uuid/v4";
-import {IItem, ItemTypes, Store} from "../common/index";
+import {IItem, ItemTypes, Store, IItemsStorage} from "../common/index";
 
 export class Item implements IItem {
     id;
     @observable name;
     @observable type;
     @observable bonus;
+    @observable isBig;
 }
 
-class ItemsStorage implements Store {
+class ItemsStorage implements IItemsStorage {
     @observable items = [];
 
     @computed get allItems() {
