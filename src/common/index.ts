@@ -1,5 +1,3 @@
-import { Rule } from "../state/RulesStorage";
-
 const Routes = {
     ItemsList: "itemsList",
     AddItem: "addItem",
@@ -24,10 +22,14 @@ enum ItemTypes {
     Bonus = 'bonus',
 }
 
-enum Rules {
+enum GameRule {
     One_TwoHanded = "one_twohanded",
     One_Big = "one_big",
     Check_Gender = "check_gender",
+}
+
+enum EquipmentRule {
+    OnlyOne = "only_one",
 }
 
 interface IItem {
@@ -36,10 +38,11 @@ interface IItem {
     type: ItemTypes;
     bonus: number;
     isBig: boolean;
+    isEquipped: boolean;
 }
 
 interface IRule {
-    name: Rules;
+    name: GameRule;
     value: boolean;
 }
 
@@ -57,6 +60,7 @@ interface Storage {
 
 interface IItemsStorage extends Storage {
     allItems: IItem[];
+    wearables: IItem[];
     totalBonus: number;
     addItem: (item: IItem) => any;
 }
@@ -83,5 +87,6 @@ export {
     IItemsStorage, 
     IRulesStorage, 
     Store, 
-    Rules
+    GameRule,
+    EquipmentRule,
 }

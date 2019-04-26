@@ -1,7 +1,7 @@
 import { observable, computed, action, autorun, when } from "mobx";
 import uuid from "uuid/v4";
 import _ from "lodash";
-import {IRule, IRulesStorage, Rules} from "../common/index";
+import {IRule, IRulesStorage, GameRule} from "../common/index";
 import { version } from "@babel/core";
 
 export class Rule implements IRule {
@@ -12,15 +12,15 @@ export class Rule implements IRule {
 class RulesStorage implements IRulesStorage {
     @observable rules = [
         {
-            name: Rules.Check_Gender,
+            name: GameRule.Check_Gender,
             value: true,
         },
         {
-            name: Rules.One_Big,
+            name: GameRule.One_Big,
             value: true,
         },
         {
-            name: Rules.One_TwoHanded,
+            name: GameRule.One_TwoHanded,
             value: true,
         },
     ];

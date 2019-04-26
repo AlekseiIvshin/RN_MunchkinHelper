@@ -1,6 +1,6 @@
 import { observable, computed, action, autorun } from "mobx";
 import uuid from "uuid/v4";
-import {IItem, ItemTypes, Store, IItemsStorage} from "../common/index";
+import {IItem, ItemTypes, Store, IItemsStorage, GameRule} from "../common/index";
 
 export class Item implements IItem {
     id;
@@ -8,6 +8,8 @@ export class Item implements IItem {
     @observable type;
     @observable bonus;
     @observable isBig;
+    @observable isEquipped;
+    @observable brokenRules: {[key in GameRule]: boolean};
 }
 
 class ItemsStorage implements IItemsStorage {
@@ -22,6 +24,10 @@ class ItemsStorage implements IItemsStorage {
             acc+=item.bonus;
             return acc;
         },0)
+    }
+
+    @computed get wearables() {
+        return this.items.filter(item => item.type !== ItemTypes.None && item.type !== ItemTypes.Bonus);
     }
 
     @action addItem(item: IItem) {
